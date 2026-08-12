@@ -6,11 +6,20 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS for the React development server
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+// Permit the local frontend and the deployed frontend(s) configured in ALLOWED_ORIGINS.
 app.use(cors({
-  origin: 'http://localhost:5173', // React port
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origin not allowed by CORS'));
+  },
   methods: ['GET', 'POST'],
-  credentials: true
 }));
 
 // Body parser middleware

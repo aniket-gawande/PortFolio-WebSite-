@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Send, CheckCircle2, Phone, MapPin, AlertCircle } from 'lucide-react';
 
+const contactApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
@@ -37,7 +39,7 @@ export default function Contact() {
     setSubmitStatus(null);
     
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(`${contactApiUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -124,7 +126,7 @@ export default function Contact() {
                 <div>
                   <span className="detail-label">LinkedIn</span>
                   <a 
-                    href="linkedin.com/in/aniket-gawande25" 
+                    href="https://linkedin.com/in/aniket-gawande25"
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="detail-value"
